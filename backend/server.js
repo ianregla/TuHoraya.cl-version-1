@@ -38,6 +38,7 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 // Función para insertar una fila en la hoja de cálculo
 async function appendRow(values) {
   try {
+    console.log("📌 Intentando insertar datos en Google Sheets...");
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
       range: 'Solicitudes Chatbot!A:M',
@@ -47,10 +48,10 @@ async function appendRow(values) {
         values: [values]
       }
     });
-    console.log("Datos insertados en Sheets:", response.data);
+    console.log("✅ ¡Datos insertados exitosamente en Sheets!", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error insertando datos en Sheets:", error);
+    console.error("❌ Error insertando datos en Sheets:", error);
     throw error;
   }
 }
@@ -68,7 +69,7 @@ app.post('/', (req, res) => {
 app.post('/api/form', async (req, res) => {
   try {
     const datosFormulario = req.body;
-    console.log("Datos recibidos en el servidor:", JSON.stringify(datosFormulario, null, 2));
+    console.log("📝 Datos recibidos en el servidor:", JSON.stringify(datosFormulario, null, 2));
 
     const rowData = [
       datosFormulario.nombre || "Sin nombre",
@@ -86,18 +87,22 @@ app.post('/api/form', async (req, res) => {
       datosFormulario.agendarPorTi || ""
     ];
 
+    console.log("⚡ Llamando a `appendRow()` con los siguientes datos:", rowData);
     await appendRow(rowData);
+    console.log("🚀 La función `appendRow()` ha sido ejecutada correctamente.");
+
     res.status(200).json({ mensaje: "Datos guardados correctamente en Google Sheets" });
-  
+
   } catch (err) {
-    console.error("Error interno detallado:", err.message);
+    console.error("❌ Error interno detallado:", err.message);
     res.status(500).json({ mensaje: "Error interno del servidor", error: err.message });
   }
 });
 
 // Levanta el servidor
 app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+  console.log(`🌍 Servidor corriendo en http://localhost:${port}`);
 });
+
 
 
