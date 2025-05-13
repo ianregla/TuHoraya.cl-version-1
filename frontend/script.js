@@ -9,7 +9,7 @@ let esperandoConfirmacion = false;
 
 const preguntas = [
   { tipo: "texto", mensaje: "¡Hola! 😊 ¿Cuál es tu nombre y apellido?", campo: "nombre" },
-  { tipo: "texto", mensaje: "Perfecto, te pediré algunos datos para poder encontrar la mejor opción de agenda para ti. ¿Cuál es tu RUT?", campo: "rut", validar: validarRUT },
+  { tipo: "texto", mensaje: "Perfecto, te pediré algunos datos para poder encontrar la mejor opción de agenda para ti. ¿Cuál es tu RUT? (Ejemplo: 12233444-0)", campo: "rut", validar: validarRUT },
   { tipo: "texto", mensaje: "¿Cuál es tu correo electrónico?", campo: "correo", validar: validarEmail },
   {
     tipo: "opciones",
@@ -68,7 +68,7 @@ const preguntas = [
   },
   {
     tipo: "opciones",
-    mensaje: "¿Tienes un médico de preferencia? 👨🏻‍⚕️​",
+    mensaje: "¿Tienes un médico de preferencia? 👨🏻‍⚕️​ En caso de que no, más rápido podremos encontrar una hora para ti ​🤫​",
     opciones: ["Sí", "No"],
     campo: "tieneMedico"
   },
@@ -166,7 +166,7 @@ inputForm.addEventListener("submit", function (e) {
 
     // Enviar los datos acumulados al servidor al confirmar
     enviarDatosAlServidor(formData);
-    
+
     agregarMensaje("¡Gracias por confiar en nosotros! 💙. Pronto nos contactaremos por correo para darte información de tu solicitud.", "bot");
     inputForm.style.display = "none";
     return;
@@ -262,7 +262,7 @@ function validarRUT(rut) {
 }
 
 function enviarDatosAlServidor(datosFormulario) {
-  fetch('http://localhost:3001/api/form', {
+  fetch('https://tuhoraya-cl-backend.onrender.com/api/form', { // 👈 ¡URL ACTUALIZADA!
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
